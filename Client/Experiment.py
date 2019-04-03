@@ -15,12 +15,21 @@ class Experiment:
     def addEventSample(self,sample):
         self.events=np.append(self.events,sample)
 
-    def saveCSV(self):
-        with open('Experiment.csv', mode='w') as experiment_file:
-            experiment_writer = csv.writer(experiment_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            experiment_writer.writerow(['Timestamp',"0","1","2","3","4","5","6","7"])
+    def saveEEGCSV(self):
+        filename=str(self.date.year)+"-"+str(self.date.month)+"-"+str(self.date.day)+"-"+str(self.date.hour)+"-"+str(self.date.minute)+"-"+str(self.date.second)+"BRAINLab-"+self.subjectName
+        with open(filename+"-EEG.csv", mode='w') as eeg_file:
+            eeg_writer = csv.writer(eeg_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            eeg_writer.writerow(['Timestamp',"0","1","2","3","4","5","6","7"])
             for element in self.eeg:
-                experiment_writer.writerow(np.append(element.timestamp,element.value))
+                eeg_writer.writerow(np.append(element.timestamp,element.value))
+    def saveMarkerCSV(self):
+        filename=str(self.date.year)+"-"+str(self.date.month)+"-"+str(self.date.day)+"-"+str(self.date.hour)+"-"+str(self.date.minute)+"-"+str(self.date.second)+"BRAINLab-"+self.subjectName
+        with open(filename+"-Events.csv", mode='w') as markers_file:
+            markers_writer = csv.writer(markers_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            markers_writer.writerow(['Timestamp','Marker'])
+            for element in self.events:
+                markers_writer.writerow(np.append(element.timestamp,element.value))
+
 
 class Sample:
     def __init__(self,timestamp,value):
